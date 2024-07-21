@@ -95,6 +95,9 @@ class TaskEnvironment(gym.Env):
         self.state = np.concatenate((users_locations, base_stations_locations, bit_size, task_sizes, tsk_t, self.bandwidth_capacity, self.computing_capacity))
         reward = -np.sum(t_pos) / self.num_tasks
 
-        done = False
+        if (np.sum(bandwidths, axis=0) < self.bandwidth_capacity).any():
+            done = True
+        else:
+            done = False
 
         return self.state, reward, done, {}
